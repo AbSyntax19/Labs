@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Day{
+char *dayName;
+int date;
+int month;
+int year;
+char *activity;
+};
+void create(struct Day* day){
+day-> dayName=(char *)malloc(sizeof(char)*20);
+day-> activity=(char *)malloc(sizeof(char)*100);
+printf("Enter the day name: ");
+scanf("%s", day->dayName);
+printf("Enter the date in dd mm yyyy format: ");
+scanf("%d %d %d", &day->date, &day->month, &day->year);
+printf("Enter the activity for the day: ");
+fflush(stdin);
+fgets(day->activity, 100, stdin);
+}
+void read(struct Day *calender, int size){
+for(int i=0; i<size; i++){
+printf("\nEnter the details for day %d: \n", i+1);
+create(&calender[i]);
+}
+}
+void display(struct Day *calender, int size){
+printf("\nWeek's activity Details: \n");
+for(int i=0; i<size; i++){
+printf("Day: %d\t\v", i+1);
+printf("DayName: %*s\t", -9, calender[i].dayName);
+printf("Date: %d/%d/%d\t", calender[i].date, calender[i].month, calender[i].year);
+printf("Activity: %s",calender[i].activity);
+printf("\n");
+}
+}
+void freemem(struct Day *calender, int size){
+for(int i=0; i<size; i++){
+free(calender[i].dayName);
+free(calender[i].activity);
+}
+}
+int main(){
+int size;
+printf("Enter the number of days in the week: ");
+scanf("%d", &size);
+struct Day *calender=(struct Day*)malloc(sizeof(struct Day)*size);
+if(calender==NULL){
+printf("Memory allocation failed, Exiting..... ");
+return 1;
+}
+read(calender,size);
+display(calender,size);
+freemem(calender,size);
+free(calender);
+return 0;
+}
