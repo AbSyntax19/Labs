@@ -43,7 +43,8 @@ LAB 2 A
 
 '''
 
-    #include <stdio.h>
+#include <stdio.h>
+
 void calculateFCFS(int processes[], int n, int burst_time[]) {
     int waiting_time[n], turnaround_time[n];
     waiting_time[0] = 0;
