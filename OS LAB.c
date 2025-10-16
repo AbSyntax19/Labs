@@ -103,12 +103,11 @@ void findWaitingTime(int processes[], int n, int burst_time[], int waiting_time[
     }
 }
 
-void findTurnaroundTime(int processes[], int n, int burst_time[], int
-    waiting_time[], int turnaround_time[]) {
-        for (int i = 0; i < n; i++) {
-            turnaround_time[i] = burst_time[i] + waiting_time[i];
-        }
+void findTurnaroundTime(int processes[], int n, int burst_time[], int waiting_time[], int turnaround_time[]) {
+    for (int i = 0; i < n; i++) {
+        turnaround_time[i] = burst_time[i] + waiting_time[i];
     }
+}
     
 void findAverageTimes(int processes[], int n, int burst_time[]) {
     int waiting_time[n], turnaround_time[n];
