@@ -335,3 +335,68 @@ int main() {
 }
 
 '''
+
+LAB 4
+
+'''
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#define FIFO_NAME "myfifo"
+#define BUFFER_SIZE 256
+
+void writer_process() {
+    int fd;
+    char message[BUFFER_SIZE];
+    mkfifo(FIFO_NAME, 0666);
+    printf("Writer process opening FIFO...\n");
+    fd = open(FIFO_NAME, O_WRONLY);
+    printf("Enter a message to send to the reader process (type 'exit' to end):\n");
+    while (1) {
+        fgets(message, BUFFER_SIZE, stdin);
+        message[strlen(message) - 1] ='\0';
+        write(fd, message, strlen(message) + 1);
+        if (strcmp(message, "exit") == 0)
+        break;
+    }
+    close(fd);
+    unlink(FIFO_NAME);
+    printf("Writer process finished.\n");
+}
+
+void reader_process() {
+    int fd;
+    char message[BUFFER_SIZE];
+    printf("Reader process opening FIFO...\n");
+    fd = open(FIFO_NAME, O_RDONLY);
+    printf("Reader process waiting for messages...\n");
+    while (1) {
+        read(fd, message, BUFFER_SIZE);
+        if (strcmp(message, "exit") == 0)
+            break;
+            printf("Received message: %s\n", message);
+        }
+    close(fd);
+    printf("Reader process finished.\n");
+}
+
+int main() {
+    pid_t pid;
+    if ((pid = fork()) < 0) {
+        perror("Fork error");
+        exit(EXIT_FAILURE);
+    }
+    if (pid == 0) {
+        reader_process();
+    } else {
+        writer_process();
+    }
+    return 0;
+}
+
+'''
